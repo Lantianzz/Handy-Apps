@@ -14,14 +14,14 @@ Example: pyinstaller.exe -F E:\xxxx
 
 Then we can find our exe file inn ...\Scripts\dist
 """
-
 import os
 import csv
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
-def walk(dirname):
+
+def walk(dirname, file_list):
     """
     This function is from a book called Think Python 
     written by Allen B. Downey.
@@ -29,14 +29,14 @@ def walk(dirname):
     It walks through a directory, gets names of all files
     and calls itself recursively on all the directories
     """
-    file_list=[]
+    
     for name in os.listdir(dirname):
         path=os.path.join(dirname,name)
         if os.path.isfile(path):
             file_list.append(path)
         else:
-            walk(path)
-    return file_list            
+            walk(path, file_list)
+    return file_list
 
 def save_csv(file,target_list):
     """write list into csv.
@@ -49,8 +49,8 @@ def save_csv(file,target_list):
     csvFile.close()
 
 def write_list(dirname):
-    
-    file_list = walk(dirname)
+    file_list=[]
+    file_list = walk(dirname, file_list)
     #split the folder names and file names into different columns
     lists=[item.split('\\') for item in file_list] 
 
@@ -61,7 +61,6 @@ def get_path():
     dirname=name.get()
     write_list(dirname)
     messagebox.showinfo(title='Succeed',message='output is in:'+dirname)
-    
 
 #GUI
 
